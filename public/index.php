@@ -18,6 +18,8 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
 
+$router = $app->getRouteCollector()->getRouteParser();
+
 $app->get('/', function ($request, $response) {
     return $response->write('<a href="\users">Users</a>');
 });
@@ -32,7 +34,7 @@ $app->get('/users', function ($request, $response) use ($users) {
         'term' => $term
     ];
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
-});
+})->setName('users');
 
 $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
     $id = $args['id'];
@@ -42,7 +44,7 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
         'id' => $id
     ];
     return $this->get('renderer')->render($response, 'users/show.phtml', $params);
-});
+})->setName('user');
 
 /* $app->get('/users/new', function ($request, $response) {
     $params = [
@@ -50,7 +52,7 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
         'errors' => []
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
-});
+})setName('new');
 
 $app->post('/users', function ($request, $response) use ($repo) {
     $validator = new Validator();
