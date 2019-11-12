@@ -34,7 +34,17 @@ $app->get('/users', function ($request, $response) use ($users) {
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 });
 
-$app->get('/users/new', function ($request, $response) {
+$app->get('/users/{id}', function ($request, $response, $args) use ($users) {
+    $id = $args['id'];
+    $user = collect($users)->firstWhere('Id', $id);
+    $params = [
+        'user' => $user,
+        'id' => $id
+    ];
+    return $this->get('renderer')->render($response, 'users/show.phtml', $params);
+});
+
+/* $app->get('/users/new', function ($request, $response) {
     $params = [
         'user' => ['name' => '', 'email' => '', 'password' => '', 'passwordConfirmation' => '', 'city' => ''],
         'errors' => []
@@ -57,6 +67,6 @@ $app->post('/users', function ($request, $response) use ($repo) {
         'errors' => $errors
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
-});
+}); */
 
 $app->run();
