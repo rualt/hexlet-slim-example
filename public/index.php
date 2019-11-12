@@ -20,18 +20,23 @@ $app->addErrorMiddleware(true, true, true);
 
 $router = $app->getRouteCollector()->getRouteParser();
 
-$app->get('/', function ($request, $response) {
-    return $response->write('<a href="\users">Users</a>');
-});
+$app->get('/', function ($request, $response) use ($router) {
+    $urlUsers = $router->urlFor('users');
+    $response->write("Welcome to Slim!\n");
+    $response->write("<a href='{$urlUsers}'>List of all characters</a>");
+    return $response;
+})->setName('home');
 
-$app->get('/users', function ($request, $response) use ($users) {
+$app->get('/users', function ($request, $response) use ($router, $users) {
+    $urlUsers = $router->urlFor('users');
     $term = $request->getQueryParam('term');
     $result = collect($users)->sortBy('Name')->filter(function ($user) use ($term) {
         return s($user['Name'])->startsWith($term, false);
     });
     $params = [
         'users' => $result,
-        'term' => $term
+        'term' => $term,
+        'urlUsers' => $urlUsers
     ];
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 })->setName('users');
@@ -52,9 +57,9 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
         'errors' => []
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
-})setName('new');
+ })->setName('new');
 
-$app->post('/users', function ($request, $response) use ($repo) {
+/* S$app->post('/users', function ($request, $response) use ($repo) {
     $validator = new Validator();
     $user = $request->getParsedBodyParam('user');
     $errors = $validator->validate($user);
@@ -71,4 +76,4 @@ $app->post('/users', function ($request, $response) use ($repo) {
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
 }); */
 
-$app->run();
+ $app->run();
