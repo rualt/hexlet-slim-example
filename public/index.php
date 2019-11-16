@@ -22,10 +22,20 @@ $router = $app->getRouteCollector()->getRouteParser();
 
 $app->get('/', function ($request, $response) use ($router) {
     $urlUsers = $router->urlFor('users');
-    $response->write("Welcome to Slim!\n");
-    $response->write("<a href='{$urlUsers}'>List of all characters</a>");
+    $urlTest = $router->urlFor('test');
+    $response->write("Welcome to Slim!<br>");
+    $response->write("<a href='{$urlUsers}'>List of all characters</a><br>");
+    $response->write("<a href='{$urlTest}'>Test</a><br>");
     return $response;
 })->setName('home');
+
+
+$app->get('/test', function ($request, $response) use ($router) {
+    foreach ($request->getHeaders() as $name => $values) {
+        echo $name . ': ' . implode(', ', $values) . '<br>';
+    }
+    return $response;
+})->setName('test');
 
 $app->get('/users', function ($request, $response) use ($router, $users) {
     $urlUsers = $router->urlFor('users');
