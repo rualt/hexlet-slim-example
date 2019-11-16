@@ -37,6 +37,13 @@ $app->get('/test', function ($request, $response) use ($router) {
     return $response;
 })->setName('test');
 
+$app->get('/404', function ($request, $response) use ($router) {
+    $urlHome = $router->urlFor('home');
+    $response->write("Page not foung<br>");
+    $response->write("<a href='{$urlHome}'>⌂ Main page</a><br>");
+    return $response;
+})->setName('not found');
+
 $app->get('/users', function ($request, $response) use ($router, $users) {
     $urlUsers = $router->urlFor('users');
     $term = $request->getQueryParam('term');
@@ -58,7 +65,8 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
         'user' => $user,
         'id' => $id
     ];
-    return $this->get('renderer')->render($response, 'users/show.phtml', $params);
+    $newResponse = isset($user) ? $response : $response->withStatus(404)->withHeader('Location', '/404');
+    return $this->get('renderer')->render($newResponse, 'users/show.phtml', $params);
 })->setName('user');
 
 /* $app->get('/users/new', function ($request, $response) {
