@@ -46,6 +46,7 @@ $app->get('/404', function ($request, $response) use ($router) {
 
 $app->get('/users', function ($request, $response) use ($router, $users) {
     $urlUsers = $router->urlFor('users');
+    $urlAddUser = $router->urlFor('add user');
     $term = $request->getQueryParam('term');
     $result = collect($users)->sortBy('Name')->filter(function ($user) use ($term) {
         return s($user['Name'])->startsWith($term, false);
@@ -53,7 +54,8 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
     $params = [
         'users' => $result,
         'term' => $term,
-        'urlUsers' => $urlUsers
+        'urlUsers' => $urlUsers,
+        'urlAddUser' => $urlAddUser
     ];
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 })->setName('users');
@@ -69,13 +71,13 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
     return $this->get('renderer')->render($newResponse, 'users/show.phtml', $params);
 })->setName('user');
 
-/* $app->get('/users/new', function ($request, $response) {
+$app->get('/add/user', function ($request, $response) use ($router, $users) {
     $params = [
         'user' => ['name' => '', 'email' => '', 'password' => '', 'passwordConfirmation' => '', 'city' => ''],
         'errors' => []
     ];
-    return $this->get('renderer')->render($response, "users/new.phtml", $params);
- })->setName('new');
+    return $this->get('renderer')->render($response, "add/user.phtml", $params);
+})->setName('add user');
 
 /* S$app->post('/users', function ($request, $response) use ($repo) {
     $validator = new Validator();
