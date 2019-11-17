@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 namespace HP\Parser;
 
@@ -25,4 +25,11 @@ function csvToArray($delimeter, $enclosure, $fileSourse)
     return $result;
 }
 
-// print_r(csvToArray(';', '"', '/home/rualt/Documents/Projects/hp-training/data/characters.csv'));
+/* function saveArrayAsJson($array)
+{
+    file_put_contents(__DIR__ . '/../data/characters.json', json_encode($array));
+}
+
+$characters = csvToArray(';', '"', __DIR__ . '/../data/characters.csv');
+
+saveArrayAsJson($characters); */
