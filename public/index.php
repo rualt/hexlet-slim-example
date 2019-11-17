@@ -62,7 +62,7 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
 
 $app->get('/users/new', function ($request, $response) use ($router, $users) {
     $params = [
-        'user' => ['name' => '', 'email' => '', 'password' => '', 'passwordConfirmation' => '', 'city' => ''],
+        'user' => ['name' => '', 'gender' => ''],
         'errors' => []
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
@@ -79,7 +79,7 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
     return $this->get('renderer')->render($newResponse, 'users/show.phtml', $params);
 })->setName('user');
 
-/* S$app->post('/users', function ($request, $response) use ($repo) {
+/* $app->post('/users', function ($request, $response) use ($repo) {
     $validator = new Validator();
     $user = $request->getParsedBodyParam('user');
     $errors = $validator->validate($user);
