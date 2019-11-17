@@ -2,17 +2,17 @@
 
 namespace App;
 
-class Validator implements ValidatorInterface
+class Validator
 {
-    public function validate(array $course)
+    public function validate(array $user)
     {
         $errors = [];
-        if ($course['paid'] == '') {
-            $errors['paid'] = "Can't be blank";
+        if ($user['name'] == '') {
+            $errors['name'] = "Can't be blank";
         }
 
-        if (empty($course['title'])) {
-            $errors['title'] = "Can't be blank";
+        if (empty($user['gender'])) {
+            $errors['gender'] = "Can't be blank";
         }
 
         return $errors;
