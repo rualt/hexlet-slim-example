@@ -7,9 +7,14 @@ use function Stringy\create as s;
 require __DIR__ . '/../vendor/autoload.php';
 const FILE = __DIR__ . '/../data/characters.json';
 
+session_start();
+
 $container = new Container();
 $container->set('renderer', function () {
     return new \Slim\Views\PhpRenderer(__DIR__ . '/../templates');
+});
+$container->set('flash', function () {
+    return new \Slim\Flash\Messages();
 });
 
 AppFactory::setContainer($container);
@@ -37,11 +42,13 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
     $result = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
         return s($user['name'])->startsWith($term, false);
     });
+    $messages = $this->get('flash')->getMessages();
     $params = [
         'users' => $result,
         'term' => $term,
         'urlUsers' => $urlUsers,
-        'urlNewUser' => $urlNewUser
+        'urlNewUser' => $urlNewUser,
+        'messages' => $messages
     ];
     return $this->get('renderer')->render($response, 'users/list.phtml', $params);
 })->setName('users');
@@ -71,6 +78,7 @@ $app->post('/users', function ($request, $response) use ($repo) {
     $errors = $validator->validate($user);
     if (count($errors) === 0) {
         $repo->saveData($user, FILE);
+        $this->get('flash')->addMessage('success', 'User is added!');
         return $response->withHeader('Location', '/users')
           ->withStatus(302);
     }

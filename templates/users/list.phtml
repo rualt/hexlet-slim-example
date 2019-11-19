@@ -1,13 +1,18 @@
-<a href="<?= htmlspecialchars($urlNewUser) ?>">New User</a>
+<a href="<?= htmlspecialchars($urlNewUser) ?>">Add new user</a><br>
 
 <form action="/users" method="get">
 <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" />
 <input type="submit" value="Search" />
 </form>
 
-    <?php foreach ($users as $user) : ?>
-        <div>
-            <a href="/users/<?= htmlspecialchars($user['id']) ?>"><?= htmlspecialchars($user['name']) ?></a>
-        </div>
-    <?php endforeach ?>
+<?php if (isset($messages['success'])): ?>
+    <h3><?= htmlspecialchars($messages['success'][0])?></h3>
+<?php endif;?>
+
+<?php foreach ($users as $user): ?>
+    <div>
+        <a href="/users/<?= htmlspecialchars($user['id']) ?>"><?= htmlspecialchars($user['name']) ?></a>
+    </div>
+<?php endforeach;?>
+
 <a href="<?= htmlspecialchars($urlUsers) ?>"><h1>🔙</h1></a>
