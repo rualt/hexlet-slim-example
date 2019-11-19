@@ -5,9 +5,7 @@ use DI\Container;
 use function Stringy\create as s;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-$file = file_get_contents(__DIR__ . '/../data/characters.json');
-$users = json_decode($file, true);
+const FILE = __DIR__ . '/../data/characters.json';
 
 $container = new Container();
 $container->set('renderer', function () {
@@ -19,6 +17,8 @@ $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
 
 $router = $app->getRouteCollector()->getRouteParser();
+$repo = new App\Repository();
+$users = $repo->getData(FILE);
 
 $app->get('/', function ($request, $response) use ($router) {
     $urlUsers = $router->urlFor('users');
@@ -48,8 +48,8 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
     $urlUsers = $router->urlFor('users');
     $urlNewUser = $router->urlFor('new user');
     $term = $request->getQueryParam('term');
-    $result = collect($users)->sortBy('Name')->filter(function ($user) use ($term) {
-        return s($user['Name'])->startsWith($term, false);
+    $result = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
+        return s($user['name'])->startsWith($term, false);
     });
     $params = [
         'users' => $result,
@@ -70,7 +70,7 @@ $app->get('/users/new', function ($request, $response) use ($router, $users) {
 
 $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
     $id = $args['id'];
-    $user = collect($users)->firstWhere('Id', $id);
+    $user = collect($users)->firstWhere('id', $id);
     $params = [
         'user' => $user,
         'id' => $id
@@ -79,13 +79,13 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
     return $this->get('renderer')->render($newResponse, 'users/show.phtml', $params);
 })->setName('user');
 
-/* $app->post('/users', function ($request, $response) use ($repo) {
-    $validator = new Validator();
+$app->post('/users', function ($request, $response) use ($repo) {
+    $validator = new App\Validator();
     $user = $request->getParsedBodyParam('user');
     $errors = $validator->validate($user);
     if (count($errors) === 0) {
-        $repo->save($user);
-        return $response->withHeader('Location', '/')
+        $repo->saveData($user, FILE);
+        return $response->withHeader('Location', '/users')
           ->withStatus(302);
     }
 
@@ -94,6 +94,6 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($users) {
         'errors' => $errors
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
-}); */
+});
 
  $app->run();

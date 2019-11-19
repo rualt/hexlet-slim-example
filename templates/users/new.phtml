@@ -8,14 +8,5 @@
       <div><?= $errors['name'] ?></div>
     <?php endif ?>
   </div>
-  <div>
-    <label>
-        Gender
-      <input type="text" name="user[gender]" value="<?= htmlspecialchars($user['name']) ?>">
-    </label>
-    <?php if (isset($errors['name'])): ?>
-      <div><?= $errors['name'] ?></div>
-    <?php endif ?>
-  </div>
-  <input type="submit" value="Sign Up">
+  <input type="submit" value="Add new user">
 </form>

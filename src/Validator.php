@@ -10,11 +10,6 @@ class Validator
         if ($user['name'] == '') {
             $errors['name'] = "Can't be blank";
         }
-
-        if (empty($user['gender'])) {
-            $errors['gender'] = "Can't be blank";
-        }
-
         return $errors;
     }
 }

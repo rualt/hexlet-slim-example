@@ -4,28 +4,20 @@ namespace App;
 
 class Repository
 {
-    public function __construct()
+    public function getData($file)
     {
-        session_start();
+        return json_decode(file_get_contents($file), true);
     }
 
-    public function all()
+    public function saveData(array $user, $file)
     {
-        return array_values($_SESSION);
-    }
-
-    public function find(int $id)
-    {
-        return $_SESSION[$id];
-    }
-
-    public function save(array $item)
-    {
-        if (empty($item['title']) || $item['paid'] == '') {
+        if ($user['name'] === '') {
             $json = json_encode($item);
             throw new \Exception("Wrong data: {$json}");
         }
-        $item['id'] = uniqid();
-        $_SESSION[$item['id']] = $item;
+        $users = $this->getData($file);
+        $user['id'] = count($users) + 1;
+        $users[] = $user;
+        file_put_contents($file, json_encode($users));
     }
 }
