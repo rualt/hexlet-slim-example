@@ -23,12 +23,12 @@ $users = $repo->getData(FILE);
 $app->get('/', function ($request, $response) use ($router) {
     $urlUsers = $router->urlFor('users');
     $urlTest = $router->urlFor('test');
-    $response->write("Welcome to Slim!<br>");
-    $response->write("<a href='{$urlUsers}'>List of all characters</a><br>");
-    $response->write("<a href='{$urlTest}'>Test</a><br>");
-    return $response;
+    $params = [
+        'urlUsers' => $urlUsers,
+        'urlTest' => $urlTest
+    ];
+    return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 })->setName('home');
-
 
 $app->get('/test', function ($request, $response) use ($router) {
     foreach ($request->getHeaders() as $name => $values) {
@@ -57,7 +57,7 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
         'urlUsers' => $urlUsers,
         'urlNewUser' => $urlNewUser
     ];
-    return $this->get('renderer')->render($response, 'users/index.phtml', $params);
+    return $this->get('renderer')->render($response, 'users/list.phtml', $params);
 })->setName('users');
 
 $app->get('/users/new', function ($request, $response) use ($router, $users) {
