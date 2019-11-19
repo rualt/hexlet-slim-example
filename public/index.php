@@ -30,20 +30,6 @@ $app->get('/', function ($request, $response) use ($router) {
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 })->setName('home');
 
-$app->get('/test', function ($request, $response) use ($router) {
-    foreach ($request->getHeaders() as $name => $values) {
-        echo $name . ': ' . implode(', ', $values) . '<br>';
-    }
-    return $response;
-})->setName('test');
-
-$app->get('/404', function ($request, $response) use ($router) {
-    $urlHome = $router->urlFor('home');
-    $response->write("Page not foung<br>");
-    $response->write("<a href='{$urlHome}'>⌂ Main page</a><br>");
-    return $response;
-})->setName('not found');
-
 $app->get('/users', function ($request, $response) use ($router, $users) {
     $urlUsers = $router->urlFor('users');
     $urlNewUser = $router->urlFor('new user');
@@ -95,5 +81,19 @@ $app->post('/users', function ($request, $response) use ($repo) {
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
 });
+
+$app->get('/404', function ($request, $response) use ($router) {
+    $urlHome = $router->urlFor('home');
+    $response->write("Page not foung<br>");
+    $response->write("<a href='{$urlHome}'>⌂ Main page</a><br>");
+    return $response;
+})->setName('not found');
+
+$app->get('/test', function ($request, $response) use ($router) {
+    foreach ($request->getHeaders() as $name => $values) {
+        echo $name . ': ' . implode(', ', $values) . '<br>';
+    }
+    return $response;
+})->setName('test');
 
  $app->run();
