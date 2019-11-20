@@ -32,7 +32,7 @@ $app->get('/', function ($request, $response) use ($router) {
         'urlUsers' => $urlUsers,
         'urlTest' => $urlTest
     ];
-    return $this->get('renderer')->render($response, 'users/index.phtml', $params);
+    return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
 
 $app->get('/users', function ($request, $response) use ($router, $users) {
@@ -50,7 +50,7 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
         'urlNewUser' => $urlNewUser,
         'messages' => $messages
     ];
-    return $this->get('renderer')->render($response, 'users/list.phtml', $params);
+    return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 })->setName('users');
 
 $app->get('/users/new', function ($request, $response) use ($router, $users) {
