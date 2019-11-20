@@ -44,12 +44,11 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
     $term = $request->getQueryParam('term');
 
     $page = $request->getQueryParam('page', 1);
-    $per = $request->getQueryParam('per', 5);
+    $per = $request->getQueryParam('per', 10);
     $offset = ($page - 1) * $per;
-    $usersSorted = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
+    $usersPerPage = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
         return s($user['name'])->startsWith($term, false);
-    });
-    $usersPerPage = $usersSorted->slice($offset, $per);
+    })->slice($offset, $per);
     $params = [
         'users' => $usersPerPage,
         'term' => $term,
