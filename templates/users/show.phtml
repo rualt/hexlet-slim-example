@@ -1,7 +1,7 @@
 <?php if (isset($user)) : ?>
     <?php foreach ($user as $key => $value) : ?>
         <div>
-            <?= htmlspecialchars($key) ?>: <?= htmlspecialchars($value) ?>
+            <strong><?= htmlspecialchars($key) ?></strong>: <?= htmlspecialchars($value) ?>
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
