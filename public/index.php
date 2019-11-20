@@ -36,16 +36,24 @@ $app->get('/', function ($request, $response) use ($router) {
 })->setName('home');
 
 $app->get('/users', function ($request, $response) use ($router, $users) {
+    $messages = $this->get('flash')->getMessages();
+
     $urlUsers = $router->urlFor('users');
     $urlNewUser = $router->urlFor('new user');
+
     $term = $request->getQueryParam('term');
-    $result = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
+
+    $page = $request->getQueryParam('page', 1);
+    $per = $request->getQueryParam('per', 5);
+    $offset = ($page - 1) * $per;
+    $usersSorted = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
         return s($user['name'])->startsWith($term, false);
     });
-    $messages = $this->get('flash')->getMessages();
+    $usersPerPage = $usersSorted->slice($offset, $per);
     $params = [
-        'users' => $result,
+        'users' => $usersPerPage,
         'term' => $term,
+        'page' => $page,
         'urlUsers' => $urlUsers,
         'urlNewUser' => $urlNewUser,
         'messages' => $messages
