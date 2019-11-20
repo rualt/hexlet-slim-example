@@ -46,6 +46,7 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
     $page = $request->getQueryParam('page', 1);
     $per = $request->getQueryParam('per', 10);
     $offset = ($page - 1) * $per;
+    $lastPage = ceil(count($users) / $per);
     $usersPerPage = collect($users)->sortBy('name')->filter(function ($user) use ($term) {
         return s($user['name'])->startsWith($term, false);
     })->slice($offset, $per);
@@ -53,6 +54,7 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
         'users' => $usersPerPage,
         'term' => $term,
         'page' => $page,
+        'lastPage' => $lastPage,
         'urlUsers' => $urlUsers,
         'urlNewUser' => $urlNewUser,
         'messages' => $messages

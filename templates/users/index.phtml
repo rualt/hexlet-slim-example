@@ -30,5 +30,8 @@
 <br>
 
 <div>
-<a href="?page=<?= $page < 2 ? 1 : $page - 1 ?>">Prev</a> <a href="?page=<?= $page + 1 ?>">Next</a>
+<a href="?page=1"><<</a> 
+<a href="?page=<?= $page < 2 ? 1 : $page - 1 ?>">Prev</a> 
+<a href="?page=<?= $page >= $lastPage ? $page : $page + 1 ?>">Next</a>
+<a href="?page=<?= $lastPage ?>">>></a> 
 </div>
