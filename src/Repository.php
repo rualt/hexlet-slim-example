@@ -22,12 +22,10 @@ class Repository
     public function destroy($id, $file)
     {
         $users = $this->getData($file);
-        $result = [];
         foreach ($users as $index => $user) {
             if ($user['id'] == $id) {
                 unset($users[$index]);
-                $result = array_values($users);
-                file_put_contents($file, json_encode($result));
+                file_put_contents($file, json_encode(array_values($users)));
             }
         }
     }
