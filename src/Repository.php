@@ -9,6 +9,29 @@ class Repository
         return json_decode(file_get_contents($file), true);
     }
 
+    /* public function find($id, $file)
+    {
+        $users = $this->getData($file);
+        foreach ($users as $user) {
+            if ($user['id'] === $id) {
+                return $user
+            }
+        }
+    } */
+
+    public function destroy($id, $file)
+    {
+        $users = $this->getData($file);
+        $result = [];
+        foreach ($users as $index => $user) {
+            if ($user['id'] == $id) {
+                unset($users[$index]);
+                $result = array_values($users);
+                file_put_contents($file, json_encode($result));
+            }
+        }
+    }
+
     public function saveData(array $item, $file)
     {
         if ($item['name'] === '') {

@@ -147,6 +147,12 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
     return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
 });
 
+$app->delete('/users/{id}', function ($request, $response, array $args) use ($repo, $router) {
+    $id = $args['id'];
+    $repo->destroy($id, FILE);
+    $this->get('flash')->addMessage('success', 'User has been deleted');
+    return $response->withRedirect($router->urlFor('users'));
+});
 
 $app->get('/404', function ($request, $response) use ($router) {
     $urlHome = $router->urlFor('home');

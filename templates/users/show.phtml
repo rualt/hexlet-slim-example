@@ -20,6 +20,12 @@
 <br>
     <a href="/users">Go back</a><br>
 <br>
+
+<form action="/users/<?= $user['id'] ?>" method="post">
+      <input type="hidden" name="_METHOD" value="DELETE">
+      <input type="submit" value="Delete">
+    </form>
+  </div>
 <!-- <form>
     <input type="button" value="Go back" onclick="history.back()">
 </form>
