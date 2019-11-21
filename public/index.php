@@ -1,6 +1,8 @@
 <?php
 
 use Slim\Factory\AppFactory;
+use Slim\Middleware\MethodOverrideMiddleware;
+
 use DI\Container;
 use function Stringy\create as s;
 
@@ -20,6 +22,7 @@ $container->set('flash', function () {
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
+$app->add(MethodOverrideMiddleware::class);
 
 $router = $app->getRouteCollector()->getRouteParser();
 $repo = new App\Repository();
@@ -70,34 +73,80 @@ $app->get('/users/new', function ($request, $response) use ($router, $users) {
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
 })->setName('new user');
 
-$app->get('/users/{id}', function ($request, $response, $args) use ($users) {
+$app->get('/users/{id}', function ($request, $response, $args) use ($users, $router) {
+    $id = $args['id'];
+    $user = collect($users)->firstWhere('id', $id);
+    $urlUserEdit = $router->urlFor('editUser', ['id' => $user['id']]);
+    $messages = $this->get('flash')->getMessages();
+    $params = [
+        'user' => $user,
+        'id' => $id,
+        'urlUserEdit' => $urlUserEdit,
+        'messages' => $messages
+    ];
+    $response = isset($user) ? $response : $response->withStatus(404)->withHeader('Location', '/404');
+    return $this->get('renderer')->render($response, 'users/show.phtml', $params);
+})->setName('user');
+
+$app->get('/users/{id}/edit', function ($request, $response, $args) use ($router, $users) {
     $id = $args['id'];
     $user = collect($users)->firstWhere('id', $id);
     $params = [
         'user' => $user,
-        'id' => $id
+        'errors' => []
     ];
-    $newResponse = isset($user) ? $response : $response->withStatus(404)->withHeader('Location', '/404');
-    return $this->get('renderer')->render($newResponse, 'users/show.phtml', $params);
-})->setName('user');
+    return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
+})->setName('editUser');
+    
 
-$app->post('/users', function ($request, $response) use ($repo) {
+$app->post('/users', function ($request, $response) use ($repo, $router) {
     $validator = new App\Validator();
     $user = $request->getParsedBodyParam('user');
     $errors = $validator->validate($user);
     if (count($errors) === 0) {
+        $urlUsers = $router->urlFor('users');
         $repo->saveData($user, FILE);
         $this->get('flash')->addMessage('success', 'User is added!');
-        return $response->withHeader('Location', '/users')
-          ->withStatus(302);
+        return $response->withRedirect($urlUsers);
     }
 
     $params = [
         'user' => $user,
         'errors' => $errors
     ];
+    $response = $response->withStatus(422);
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
 });
+
+$app->patch('/users/{id}', function ($request, $response, array $args) use ($users, $repo, $router) {
+    $id = $args['id'];
+    $user = collect($users)->firstWhere('id', $id);
+    $data = $request->getParsedBodyParam('user');
+
+    $validator = new App\Validator();
+    $errors = $validator->validate($data);
+
+    if ($user['name'] == $data['name']) {
+        $errors['name'] = "You didn't change the name";
+    } elseif (count($errors) === 0) {
+        // Ручное копирование данных из формы в нашу сущность
+        $user['name'] = $data['name'];
+        $this->get('flash')->addMessage('success', 'User has been updated');
+        $repo->saveData($user, FILE);
+        $url = $router->urlFor('user', ['id' => $user['id']]);
+        return $response->withRedirect($url);
+    }
+
+    $params = [
+        'userData' => $data,
+        'user' => $user,
+        'errors' => $errors
+    ];
+
+    $response = $response->withStatus(422);
+    return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
+});
+
 
 $app->get('/404', function ($request, $response) use ($router) {
     $urlHome = $router->urlFor('home');
@@ -113,4 +162,4 @@ $app->get('/test', function ($request, $response) use ($router) {
     return $response;
 })->setName('test');
 
- $app->run();
+$app->run();

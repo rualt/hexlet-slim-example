@@ -1,7 +1,7 @@
 <form action="/users" method="post">
   <div>
     <label>
-        Name
+        Name *
       <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
     </label>
     <?php if (isset($errors['name'])): ?>
