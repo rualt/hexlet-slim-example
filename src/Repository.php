@@ -40,7 +40,7 @@ class Repository
         $users = $this->getData($file);
 
         if (!isset($item['id'])) {
-            $item['id'] = count($users) + 1;
+            $item['id'] = uniqid();
             $users[] = $item;
             file_put_contents($file, json_encode($users));
         } else {
