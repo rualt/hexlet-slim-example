@@ -162,9 +162,18 @@ $app->get('/404', function ($request, $response) use ($router) {
 })->setName('not found');
 
 $app->get('/test', function ($request, $response) use ($router) {
-    foreach ($request->getHeaders() as $name => $values) {
+    /*foreach ($request->getHeaders() as $name => $values) {
         echo $name . ': ' . implode(', ', $values) . '<br>';
+    }*/
+
+    if (!isset($_SESSION['count'])) {
+        $_SESSION['count'] = 0;
+    } else {
+        $_SESSION['count']++;
     }
+    
+    print_r($_SESSION['count']);
+    
     return $response;
 })->setName('test');
 
