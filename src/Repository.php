@@ -9,7 +9,7 @@ class Repository
         return json_decode(file_get_contents($file), true);
     }
 
-    public function destroy($id, $file)
+    public function delete($id, $file)
     {
         $users = $this->getData($file);
         foreach ($users as $index => $user) {
@@ -36,8 +36,8 @@ class Repository
         } else {
             foreach ($users as $index => $user) {
                 foreach ($user as $key => $value) {
-                    if ($value === $item['id']) {
-                        $users[$index]['name'] = $item['name'];
+                    if ($user['id'] === $item['id']) {
+                        $users[$index] = $item;
                         file_put_contents($file, json_encode($users));
                         return $item['id'];
                     }
