@@ -10,13 +10,15 @@
 
 <?php if (isset($user)) : ?>
     <?php foreach ($user as $key => $value) : ?>
+
         <div>
             <strong><?= htmlspecialchars($key) ?></strong>: <?= htmlspecialchars($value) ?>
         </div>
     <?php endforeach; ?>
 <?php endif ?>
+
 <br>
-    <a href="/users/<?= $user['id'] ?>/edit">Edit name</a><br>
+    <a href="/users/<?= $user['id'] ?>/edit">Edit</a><br>
 <br>
     <a href="/users">Go back</a><br>
 <br>
@@ -26,3 +28,4 @@
       <input type="submit" value="Delete">
     </form>
   </div>
+
