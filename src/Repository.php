@@ -9,16 +9,6 @@ class Repository
         return json_decode(file_get_contents($file), true);
     }
 
-    /* public function find($id, $file)
-    {
-        $users = $this->getData($file);
-        foreach ($users as $user) {
-            if ($user['id'] === $id) {
-                return $user
-            }
-        }
-    } */
-
     public function destroy($id, $file)
     {
         $users = $this->getData($file);
