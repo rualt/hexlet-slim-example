@@ -31,5 +31,16 @@ function csvToArray($delimeter, $enclosure, $fileSourse)
 }
 
 $characters = csvToArray(';', '"', __DIR__ . '/../data/characters.csv');
+$requiredKeys = ['name','wand','patronus'];
+$result = [];
+foreach ($characters as $index => $character) {
+    foreach ($character as $key => $value) {
+        if (in_array($key, $requiredKeys)) {
+            $result[$index][$key] = $value;
+        } elseif ($key = 'id') {
+            $result[$index][$key] = uniqid();
+        }
+    }
+}
 
-saveArrayAsJson($characters); */
+saveArrayAsJson($result); */
