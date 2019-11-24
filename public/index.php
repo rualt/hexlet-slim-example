@@ -30,10 +30,8 @@ $users = $repo->getData(FILE);
 
 $app->get('/', function ($request, $response) use ($router) {
     $urlUsers = $router->urlFor('users');
-    $urlTest = $router->urlFor('test');
     $params = [
         'urlUsers' => $urlUsers,
-        'urlTest' => $urlTest
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
@@ -160,21 +158,5 @@ $app->get('/404', function ($request, $response) use ($router) {
     $response->write("<a href='{$urlHome}'>⌂ Main page</a><br>");
     return $response;
 })->setName('not found');
-
-$app->get('/test', function ($request, $response) use ($router) {
-    /*foreach ($request->getHeaders() as $name => $values) {
-        echo $name . ': ' . implode(', ', $values) . '<br>';
-    }*/
-
-    if (!isset($_SESSION['count'])) {
-        $_SESSION['count'] = 0;
-    } else {
-        $_SESSION['count']++;
-    }
-    
-    print_r($_SESSION['count']);
-    
-    return $response;
-})->setName('test');
 
 $app->run();
