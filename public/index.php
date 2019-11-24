@@ -119,13 +119,16 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
     $validator = new App\Validator();
     $errors = $validator->validate($data);
 
-    if ($user['name'] == $data['name']) {
-        $errors['name'] = "You didn't change the name";
-    } elseif (count($errors) === 0) {
-        // Ручное копирование данных из формы в нашу сущность
-        $user['name'] = $data['name'];
-        $user['wand'] = $data['wand'];
-        $user['patronus'] = $data['patronus'];
+    if ($data['name'] === $user['name']
+    && $data['wand'] === $user['wand']
+    && $data['patronus'] === $user['patronus']) {
+        $errors['no change'] = "You didn't change anything";
+    }
+
+    if (count($errors) === 0) {
+        foreach ($data as $key => $value) {
+            $user[$key] = $data[$key];
+        }
         $this->get('flash')->addMessage('success', 'User has been updated');
         $repo->saveData($user, FILE);
         $url = $router->urlFor('user', ['id' => $user['id']]);
