@@ -5,11 +5,6 @@
 <input type="submit" value="Search" />
 </form>
 
-<?php if (isset($messages['success'])): ?>
-    <h3><?= htmlspecialchars($messages['success'][0])?></h3>
-<?php endif;?>
-
-<!-- 
 <?php if (count($messages) > 0) : ?>
     <ul>
     <?php foreach ($messages as $messageType) : ?>
@@ -18,8 +13,7 @@
         <?php endforeach ?>
     <?php endforeach ?>
     </ul>
-<?php endif ?> 
--->
+<?php endif ?>
 
 <?php foreach ($users as $user): ?>
     <div>
