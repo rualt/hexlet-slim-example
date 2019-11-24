@@ -25,6 +25,7 @@ $app->addErrorMiddleware(true, true, true);
 $app->add(MethodOverrideMiddleware::class);
 
 $router = $app->getRouteCollector()->getRouteParser();
+
 $repo = new App\Repository();
 $users = $repo->getData(FILE);
 
@@ -60,7 +61,7 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
 
 $app->get('/users/new', function ($request, $response) use ($router, $users) {
     $params = [
-        'user' => ['name' => '', 'gender' => ''],
+        'user' => ['name' => '', 'wand' => '', 'patronus' => ''],
         'errors' => []
     ];
     return $this->get('renderer')->render($response, "users/new.phtml", $params);
@@ -123,6 +124,8 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
     } elseif (count($errors) === 0) {
         // Ручное копирование данных из формы в нашу сущность
         $user['name'] = $data['name'];
+        $user['wand'] = $data['wand'];
+        $user['patronus'] = $data['patronus'];
         $this->get('flash')->addMessage('success', 'User has been updated');
         $repo->saveData($user, FILE);
         $url = $router->urlFor('user', ['id' => $user['id']]);
@@ -140,7 +143,7 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
 
 $app->delete('/users/{id}', function ($request, $response, array $args) use ($repo, $router) {
     $id = $args['id'];
-    $repo->destroy($id, FILE);
+    $repo->delete($id, FILE);
     $this->get('flash')->addMessage('success', 'User has been deleted');
     return $response->withRedirect($router->urlFor('users'));
 });
