@@ -7,9 +7,13 @@ class Validator
     public function validate(array $user)
     {
         $errors = [];
-        if ($user['name'] == '') {
-            $errors['name'] = "Can't be blank";
+
+        foreach ($user as $key => $value) {
+            if ($value == '') {
+                $errors[$key] = "can't be blank";
+            }
         }
+        
         return $errors;
     }
 }
