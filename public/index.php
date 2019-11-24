@@ -29,19 +29,14 @@ $repo = new App\Repository();
 $users = $repo->getData(FILE);
 
 $app->get('/', function ($request, $response) use ($router) {
-    $urlUsers = $router->urlFor('users');
     $params = [
-        'urlUsers' => $urlUsers,
+        'urlUsers' => $router->urlFor('users'),
     ];
     return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('home');
 
 $app->get('/users', function ($request, $response) use ($router, $users) {
     $messages = $this->get('flash')->getMessages();
-
-    $urlUsers = $router->urlFor('users');
-    $urlNewUser = $router->urlFor('new user');
-
     $term = $request->getQueryParam('term');
 
     $page = $request->getQueryParam('page', 1);
@@ -56,8 +51,8 @@ $app->get('/users', function ($request, $response) use ($router, $users) {
         'term' => $term,
         'page' => $page,
         'lastPage' => $lastPage,
-        'urlUsers' => $urlUsers,
-        'urlNewUser' => $urlNewUser,
+        'urlUsers' => $router->urlFor('users'),
+        'urlNewUser' => $router->urlFor('new user'),
         'messages' => $messages
     ];
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
@@ -102,10 +97,9 @@ $app->post('/users', function ($request, $response) use ($repo, $router) {
     $user = $request->getParsedBodyParam('user');
     $errors = $validator->validate($user);
     if (count($errors) === 0) {
-        $urlUsers = $router->urlFor('users');
         $repo->saveData($user, FILE);
         $this->get('flash')->addMessage('success', 'User is added!');
-        return $response->withRedirect($urlUsers);
+        return $response->withRedirect($router->urlFor('users'));
     }
 
     $params = [
@@ -140,7 +134,6 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
         'user' => $user,
         'errors' => $errors
     ];
-
     $response = $response->withStatus(422);
     return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
 });
