@@ -1,0 +1,27 @@
+<div>
+    <label>
+        Name *
+      <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
+    </label>
+    <?php if (isset($errors['name'])): ?>
+      <div><?= $errors['name'] ?></div>
+    <?php endif ?>
+  </div>
+  <div>
+    <label>
+        Wand *
+      <input type="text" name="user[wand]" value="<?= htmlspecialchars($user['wand']) ?>">
+    </label>
+    <?php if (isset($errors['wand'])): ?>
+      <div><?= $errors['wand'] ?></div>
+    <?php endif ?>
+  </div>
+  <div>
+    <label>
+        Patronus *
+      <input type="text" name="user[patronus]" value="<?= htmlspecialchars($user['patronus']) ?>">
+    </label>
+    <?php if (isset($errors['patronus'])): ?>
+      <div><?= $errors['patronus'] ?></div>
+    <?php endif ?>
+  </div>
