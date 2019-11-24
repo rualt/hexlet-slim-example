@@ -1,12 +1,4 @@
 <form action="/users" method="post">
-  <div>
-    <label>
-        Name *
-      <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
-    </label>
-    <?php if (isset($errors['name'])): ?>
-      <div><?= $errors['name'] ?></div>
-    <?php endif ?>
-  </div>
+    <?php require('_form.phtml') ?>
   <input type="submit" value="Add new user">
 </form>
