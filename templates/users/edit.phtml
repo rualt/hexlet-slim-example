@@ -1,13 +1,10 @@
 <?php if (isset($errors['no change'])): ?>
-        <div><?= $errors['no change'] ?></div>
-        <?php endif ?>
+    <div><?= $errors['no change'] ?></div>
+<?php endif ?>
 
 <form action="/users/<?= htmlspecialchars($user['id']) ?>" method="post">
     <input type="hidden" name="_METHOD" value="PATCH">
         <?php require('_form.phtml') ?>
-        <?php if (isset($errors['no change'])): ?>
-        <div><?= $errors['no change'] ?></div>
-        <?php endif ?>
     <input type="submit" value="Update">
 </form>
 <br>
