@@ -6,7 +6,6 @@
         "phpcs": "phpcs"
     },
     "require": {
-        "php": "^7.3.0",
         "slim/php-view": "^2.2",
         "slim/slim": "^4.3",
         "slim/psr7": "^0.6.0",
