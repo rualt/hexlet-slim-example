@@ -2,8 +2,8 @@
 
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
-
 use DI\Container;
+
 use function Stringy\create as s;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -119,9 +119,7 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
     $validator = new App\Validator();
     $errors = $validator->validate($data);
 
-    if ($data['name'] === $user['name']
-    && $data['wand'] === $user['wand']
-    && $data['patronus'] === $user['patronus']) {
+    if ($data['name'] === $user['name'] && $data['wand'] === $user['wand'] && $data['patronus'] === $user['patronus']) {
         $errors['no change'] = "You didn't change anything";
     }
 
