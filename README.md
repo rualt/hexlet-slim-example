@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/rualt/hexlet-slim-example.svg?branch=master)](https://travis-ci.com/rualt/hexlet-slim-example)
-[![Maintainability](https://api.codeclimate.com/v1/badges/b25d5e31b8617d607b23/maintainability)](https://codeclimate.com/github/rualt/hexlet-slim-example/maintainability)S
+[![Maintainability](https://api.codeclimate.com/v1/badges/b25d5e31b8617d607b23/maintainability)](https://codeclimate.com/github/rualt/hexlet-slim-example/maintainability)
 
 #### This is basicly homework of Hexlet PHP web development [online course](https://ru.hexlet.io/courses/php-mvc):
 Slim micro framework - routing, templates, CRUD, deploying using Heroku and stuff
