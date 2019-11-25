@@ -1,6 +1,6 @@
 {
-    "name": "rualt/hp-training",
-    "description": "just for training",
+    "name": "rualt/hexlet-slim-example",
+    "description": "study project (Hexlet PHP web dev online course)",
     "license": "MIT",
     "scripts": {
         "phpcs": "phpcs"
