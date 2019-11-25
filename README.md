@@ -9,7 +9,7 @@ Slim micro framework - routing, templates, CRUD, deploying using Heroku and stuf
 ### You can:
 
 * С - сreate your own character
-* R - read info obout others
+* R - read about others characters
 * U - updare and fix data of already existed characters
 * D - delete character completly
 
