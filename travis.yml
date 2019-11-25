@@ -1,0 +1,8 @@
+language: php
+rvm:
+ - '7.3'
+
+install:
+  - make install
+
+script: make lint
