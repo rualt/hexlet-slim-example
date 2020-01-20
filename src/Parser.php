@@ -6,7 +6,6 @@ class Parser
 {
     public function decodeCsvToArray($delimeter, $enclosure, $fileSourse)
     {
-        $characters = [];
         if (($handle = fopen($fileSourse, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, $delimeter, $enclosure)) !== false) {
                 $characters[] = $data;
@@ -14,7 +13,6 @@ class Parser
             fclose($handle);
         }
 
-        $keys = [];
         foreach ($characters[0] as $key) {
             $keys[] = $key;
         }
