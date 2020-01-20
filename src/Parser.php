@@ -4,7 +4,7 @@ namespace App;
 
 class Parser
 {
-    const FILE_SOURCE = __DIR__ . '/../data/characters.json';
+    private const FILE_SOURCE = __DIR__ . '/../data/characters.json';
 
     public function decodeCsvToArray($delimeter, $enclosure, $fileSourse)
     {
