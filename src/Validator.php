@@ -4,7 +4,7 @@ namespace App;
 
 class Validator
 {
-    public function validate(array $user)
+    public function validate(array $user, array $originalUser = [])
     {
         $errors = [];
 
@@ -12,6 +12,11 @@ class Validator
             if ($value == '') {
                 $errors[$key] = "can't be blank";
             }
+        }
+
+        $intersection = array_intersect_key($originalUser, $user);
+        if ($intersection === $user) {
+            $errors['no change'] = "You haven't changed anything";
         }
         
         return $errors;
