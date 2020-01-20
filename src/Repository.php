@@ -34,15 +34,13 @@ class Repository
             $users[] = $item;
             file_put_contents($file, json_encode($users));
         } else {
-            foreach ($users as $index => $user) {
-                foreach ($user as $key => $value) {
-                    if ($user['id'] === $item['id']) {
-                        $users[$index] = $item;
-                        file_put_contents($file, json_encode($users));
-                        return $item['id'];
-                    }
-                }
-            }
+            $filteredUsers = array_filter($users, function ($user) use ($item) {
+                return $user['id'] == $item['id'];
+            });
+            $key = key($filteredUsers);
+            $users[$key] = $item;
+            file_put_contents($file, json_encode($users));
+            return $item['id'];
         }
     }
 }
