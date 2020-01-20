@@ -117,11 +117,7 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
     $data = $request->getParsedBodyParam('user');
 
     $validator = new App\Validator();
-    $errors = $validator->validate($data);
-
-    if ($data['name'] === $user['name'] && $data['wand'] === $user['wand'] && $data['patronus'] === $user['patronus']) {
-        $errors['no change'] = "You didn't change anything";
-    }
+    $errors = $validator->validate($data, $user);
 
     if (count($errors) === 0) {
         foreach ($data as $key => $value) {
@@ -137,7 +133,7 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($use
         'userData' => $data,
         'user' => $user,
         'errors' => $errors
-    ];
+        ];
     $response = $response->withStatus(422);
     return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
 });
