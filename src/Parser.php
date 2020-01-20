@@ -4,6 +4,8 @@ namespace App;
 
 class Parser
 {
+    const FILE_SOURCE = __DIR__ . '/../data/characters.json';
+
     public function decodeCsvToArray($delimeter, $enclosure, $fileSourse)
     {
         if (($handle = fopen($fileSourse, "r")) !== false) {
@@ -27,6 +29,6 @@ class Parser
 
     public function saveArrayAsJson($array)
     {
-        file_put_contents(__DIR__ . '/../data/characters.json', json_encode($array));
+        file_put_contents(self::FILE_SOURCE, json_encode($array));
     }
 }
