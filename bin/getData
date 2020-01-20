@@ -26,4 +26,4 @@ foreach ($characters as $index => $character) {
 }    
 
 $parser->saveArrayAsJson($result);
-echo "Data has been uploaded. Source file: data / characters.csv \ n";
+echo "Data has been uploaded. Source file: data/characters.csv \n";
