@@ -8,9 +8,15 @@ Slim micro framework - routing, templates, CRUD, deploying using Heroku and stuf
 
 ### You can:
 
-* С - сreate your own character
-* R - read about others characters
-* U - update and fix data of already existed characters
-* D - delete character completly
+*- сreate your own character
+*- read about others characters
+*- update and fix data of already existed characters
+*- delete character completly
+
+###
+```
+make data-reload
+```
+to reload data from CSV source 
 
 #### [Data sourse](https://www.kaggle.com/gulsahdemiryurek/harry-potter-dataset#Characters.csv)
